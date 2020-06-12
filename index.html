@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Boostrap-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+  <!--Font awesome-->
+  <!-- <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet"> -->
+  <link rel="stylesheet" href="css/font awesome/fontawesome-free-5.11.2-web/css/all.min.css" />
+
+
+
+  <!--Google font-->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Sen:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <!--Cutom fonts-->
+  <link rel="stylesheet" href="css/style.css">
+
+  <title>GroceryApp</title>
+</head>
+<body>
+  <main class="main">
+    <header class="header">
+    <nav class="nav">
+      <a href="#" class="nav__logo"><img src="img/icon/groceries.svg" alt="Website Logo" class="nav__logo-main"> GroceryApp</a>
+      <ul class="nav__list">
+        <li class="nav__item"><a href="#" class="nav__link">Home</a></li>
+        <li class="nav__item"><a href="#" class="nav__link">About us</a></li>
+        <li class="nav__item"><a href="#" class="nav__link">FAQs</a></li>
+        <li class="nav__item"><a href="#" class="nav__link nav__link-green">Suggest a feature</a></li>
+      </ul>
+    </nav>
+   
+      <div class="header__textbox">
+        <h1 class="heading">
+          <span class="heading__main">We Save Your Grocery List and
+            it’s accessible anywhere.
+          </span>
+          <span class="heading__sec">Make a grocery list and it’s saved to the cloud.</span>
+        </h1>
+        <a href="#" class="btnn btnn-start">Start now</a>
+      </div>
+      <!-- <img src="img/svg/hero-img.jpg" alt="Hero Image" class="header__img"> -->
+    </header>
+
+    <section class="grocery-form">
+      <form action="#" class="grocery__form" id="grocery__form">
+        <div class="gorcery__type">
+          <p class="grocery-name">Select grocery type</p>
+          <div class="grocery__type-box">
+            <div class="grocery__type-group">
+              <img src="img/icon/breakfast.svg" class="grocery__type-icon"></img>
+              <label for="cereals" class="grocery__type-name">Breakfast & Cereals</label>
+              <input type="checkbox" class="grocery__checkbox" name="cereals">
+            </div>
+            <div class="grocery__type-group">
+              <img src="img/icon/healthy-food.svg" class="grocery__type-icon"></img>
+              <label for="fruits" class="grocery__type-name">Fruits</label>
+              <input type="checkbox" class="grocery__checkbox" name="fruits">
+            </div>
+            <div class="grocery__type-group">
+              <img src="img/icon/fruits.svg" class="grocery__type-icon"></img>
+              <label for="vegetable" class="grocery__type-name">Vegetables</label>
+              <input type="checkbox" class="grocery__checkbox" name="vegetable">
+            </div>
+            <div class="grocery__type-group">
+              <img src="img/icon/toiletries.svg" class="grocery__type-icon"></img>
+              <label for="toiltries" class="grocery__type-name">Toiltries</label>
+              <input type="checkbox" class="grocery__checkbox" name="toiltries">
+            </div>
+            <button type="button" class="btnn btnn-title">Add title
+              <svg class="grocery-type__add">
+                <use xlink:href="img/sprite.svg#icon-plus"></use>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="grocery__input mar-top-medium">
+          <p class="grocery-name">Add grocery title</p>
+          <input type="text" class="grocery__input-text grocery__input-title" id="grocery__input-title" placeholder="Eg. Food Stuffs & Juices">
+        </div>
+        <div class="grocery__input mar-top-medium">
+          <p class="grocery-name">Add grocery</p>
+          <input type="text" class="grocery__input-text" id="grocery__input-text" placeholder="Eg. Pepper">
+        </div>
+        <div class="grocery__btn mar-top-medium">
+          <input type="submit" class="btnn btnn-submit" value="Add grocery">
+        </div>
+        
+      </form>
+    </section>
+    <section class="grocery-list">
+      <div class="grocery-list__searchbox">
+        <input type="text" class=" grocery__input-text grocery-list__searchinput" placeholder="Search grocery">
+        <svg class="grocery-list-searchicon">
+          <use xlink:href="img/sprite.svg#icon-search"></use>
+        </svg>
+      </div>
+      <div class="grocery-list__box">
+        <div class="grocery-title">
+          <div class="grocery-title__group">
+            <span class="grocery-title__name">Grocery List :</span>
+            <!-- <span class="grocery-title__select"><img src="img/icon/toiletries.svg" class="grocery__type-icon"></img><p class="grocery__type-name">Vegetables</p></span> -->
+          </div>
+         <div class="grocery-title__count">
+           <span>Grocery list count :</span>
+           <span id="grocery-list__count">5</span>
+         </div>
+        </div>
+        <ul class="grocery-collection" id="grocery-collection">
+
+          <!-- <li class="grocery-collection__item">
+            <span class="grocery-collection__name">Avocado Pear</span>
+            <div class="grocery-collection__btns">
+              <button type="button" class="btnn btnn-bought">Bought
+                <svg class="grocery-collection__icon check">
+                  <use xlink:href="img/sprite.svg#icon-check"></use>
+                </svg>
+              </button>
+              <button type="button" class="btnn btnn-remove">Remove
+                <svg class="grocery-collection__icon close">
+                  <use xlink:href="img/sprite.svg#icon-x"></use>
+                </svg>
+              </button>
+            </div>
+          </li> -->
+        </ul> 
+      </div>
+     
+    </section>
+
+    <section class="grocery-bought">
+      <div class="grocery-list__box">
+        <div class="grocery-title">
+          <div class="grocery-title__group">
+            <span class="grocery-title__name">Bought List Item :</span>
+          </div>
+         <div class="grocery-title__count">
+           <span>Bought grocery count:</span>
+           <span id="grocery-bought__count">8</span>
+         </div>
+        </div>
+        <ul class="grocery-bought" id="grocery-bought">
+          <li class="grocery-bought__item">
+          <del class="grey"><span class="grocery-bought__name">Plantains</span></del>
+            <div class="grocery-bought__btn">
+              <svg class="grocery-bought__icon">
+                <use xlink:href="img/sprite.svg#icon-x-circle"></use>
+              </svg>
+            </div>
+          </li>
+          <li class="grocery-bought__item">
+          <del class="grey"><span class="grocery-bought__name">Avocado Pear</span></del>
+            <div class="grocery-bought__btn">
+              <svg class="grocery-bought__icon">
+                <use xlink:href="img/sprite.svg#icon-x-circle"></use>
+              </svg>
+            </div>
+          </li>
+          <li class="grocery-bought__item">
+          <del class="grey"><span class="grocery-bought__name">Bananas</span></del>
+            <div class="grocery-bought__btn">
+              <svg class="grocery-bought__icon">
+                <use xlink:href="img/sprite.svg#icon-x-circle"></use>
+              </svg>
+            </div>
+          </li>
+          <li class="grocery-bought__item">
+          <del class="grey"><span class="grocery-bought__name">Green Pepper</span></del>
+            <div class="grocery-bought__btn">
+              <svg class="grocery-bought__icon">
+                <use xlink:href="img/sprite.svg#icon-x-circle"></use>
+              </svg>
+            </div>
+          </li>
+          <li class="grocery-bought__item">
+          <del class="grey"><span class="grocery-bought__name">Apples</span></del>
+            <div class="grocery-bought__btn">
+              <svg class="grocery-bought__icon">
+                <use xlink:href="img/sprite.svg#icon-x-circle"></use>
+              </svg>
+            </div>
+          </li>
+          <li class="grocery-bought__item">
+          <del class="grey"><span class="grocery-bought__name">Orange</span></del>
+            <div class="grocery-bought__btn">
+              <svg class="grocery-bought__icon">
+                <use xlink:href="img/sprite.svg#icon-x-circle"></use>
+              </svg>
+            </div>
+          </li>
+          <li class="grocery-bought__item">
+          <del class="grey"><span class="grocery-bought__name">Mango</span></del>
+            <div class="grocery-bought__btn">
+              <svg class="grocery-bought__icon">
+                <use xlink:href="img/sprite.svg#icon-x-circle"></use>
+              </svg>
+            </div>
+          </li>
+        </ul> 
+        <div class="clear-btn">
+          <button class="btnn btnn-clear">Clear all</button>
+        </div>
+      </div>
+    </section>
+  </main>
+ 
+  <script src="app.js"></script>
+</body>
+</html>

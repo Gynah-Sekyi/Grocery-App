@@ -4,12 +4,15 @@ const addGroceryInput = document.querySelector('#grocery__input-text');
 const addGroceryTitle = document.querySelector('#grocery__input-title');
 const form = document.querySelector('#grocery__form');
 const groceryList = document.querySelector('#grocery-collection');
+const boughtList = document.querySelector('#grocery-bought');
 const groceryListHeading = document.querySelector('.grocery-title__name');
 const boughtBtn = document.querySelector('.btnn-bought');
-const grocerybtns = '<button type="button" class="btnn btnn-bought">Bought' +
-'<svg class="grocery-collection__icon check">' +
-  '<use xlink:href="img/sprite.svg#icon-check"></use>'+
-'</svg> </button> <button type="button" class="btnn btnn-remove">Remove <svg class="grocery-collection__icon close"> <use xlink:href="img/sprite.svg#icon-x"></use></svg> </button>'
+const grocerybtns = `{<button type="button" class="btnn btnn-bought">Bought<svg class="grocery-collection__icon check"><use xlink:href="img/sprite.svg#icon-check"></use>
+</svg> </button> <button type="button" class="btnn btnn-remove">Remove <svg class="grocery-collection__icon close"> <use xlink:href="img/sprite.svg#icon-x"></use></svg> </button>}`
+
+const boughtremove = `<svg class="grocery-bought__icon">
+<use xlink:href="img/sprite.svg#icon-x-circle"></use>
+</svg>`
 
 
 //load Event Listeners
@@ -22,6 +25,8 @@ function loadEventListeners(){
   form.addEventListener('submit',addGrocery);
   //Remove from bought list 
   groceryList.addEventListener('click',removeFromGroceryList) 
+  //Add to bought list 
+  groceryList.addEventListener('click',addToBoughtList) 
 
 
 }
@@ -80,8 +85,51 @@ function addGrocery(e){
 }
 
 //Function remove from grocery list
+let boughtItem
 function removeFromGroceryList(e){
+  if(e.target.classList.contains('btnn-remove'))
+  if(confirm('Are you sure you want to delete this item'))
+  e.target.parentElement.parentElement.remove();
 
-  console.log(e.target.parentElement.classList.contains('grocery-collection__icon'));
+  boughtItem = e.target.parentElement.parentElement.firstElementChild.textContent;
+  // console.log( e.target.parentElement.parentElement.firstElementChild.textContent);
+  // addToBoughtList(e,boughtItem);
+}
+
+
+//Add to bought list 
+function addToBoughtList(e){
+  if(e.target.classList.contains('btnn-bought'));
+
+  //Create li
+  const boughtLi = document.createElement('li')
+  boughtLi.className = 'grocery-bought__item';
+  //Create del
+  const del = document.createElement('del')
+  del.className = 'grey';
+
+  //Create li
+  const boughtSpan = document.createElement('span')
+  boughtSpan.className = 'grocery-bought__name';
+  boughtSpan.appendChild(document.createTextNode(boughtItem));
+
+  del.appendChild(boughtSpan);
+  //Add btn
+  const boughtdel =document.createElement('div');
+  boughtdel.className ='grocery-bought__btn';
+  boughtdel.innerHTML = boughtremove;
+
+  boughtLi.append(del,boughtdel);
+
+
+  //Add to Bought List
+  boughtList.append(boughtLi);
+  alert('1 added');
+
+  // if(e.target.classList.contains('btnn-bought')){
+  //   e.target.parentElement.parentElement.remove()
+  // }
+ 
+  // console.log( e.target)
 
 }

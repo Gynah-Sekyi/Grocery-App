@@ -10,6 +10,7 @@ const groceryListHeading = document.querySelector('.grocery-title__name');
 const boughtBtn = document.querySelector('.btnn-bought');
 const groceryCount= document.querySelector('#grocery-list__count');
 const boughtCount= document.querySelector('#grocery-bought__count');
+const btnClearAll = document.querySelector('.btnn-clear');
 const grocerybtns = `{<button type="button" class="btnn btnn-bought">Bought<svg class="grocery-collection__icon check"><use xlink:href="img/sprite.svg#icon-check"></use>
 </svg> </button> <button type="button" class="btnn btnn-remove">Remove <svg class="grocery-collection__icon close"> <use xlink:href="img/sprite.svg#icon-x"></use></svg> </button>}`
 
@@ -24,6 +25,8 @@ loadEventListeners();
 
 //function event listeners
 function loadEventListeners(){
+  //Load DOM content
+  document.addEventListener('DOMContentLoaded',getFromLocalStorage)
   //Add task event
   form.addEventListener('submit',addGrocery);
   //Remove from bought list 
@@ -34,6 +37,8 @@ function loadEventListeners(){
   boughtList.addEventListener('click',removeFromBoughtList)
   //Search for grocery on the list
   grocerySearch.addEventListener('keyup',searchGrocery)
+  //Clear all from bought list
+  btnClearAll.addEventListener('click', clearAll)
 
 
 }
@@ -60,35 +65,20 @@ function addGrocery(e){
 
     addGroceryTitle.value = '';
 
+  //Create a grocery
+   createGrocery(addGroceryInput.value);
+    
+    //Add to LS
+    populateLocalStorage(addGroceryInput.value);
 
-    //Create li
-    const li = document.createElement('li');
-    li.className = 'grocery-collection__item';
-
-    //Create span(grocery name)
-    const span = document.createElement('span');
-    span.className = 'grocery-collection__name';
-    span.appendChild(document.createTextNode(addGroceryInput.value));
-
-    //Create button div
-    const btns =document.createElement('div');
-    btns.className ='grocery-collection__btns';
-    btns.innerHTML = grocerybtns;
-
-
-    // Append
-    li.append(span,btns);
-    groceryList.appendChild(li);
     addGroceryInput.value = '';
 
     //Update grocery count 
     count = groceryList.childElementCount;
     groceryCount.value= count   // Number(count)
-    // console.log(count);
     groceryCount.innerHTML = count;
     // // alert('Grocery added');
 
-    // console.log(count);
   }
   e.preventDefault();
 
@@ -105,7 +95,6 @@ function removeFromGroceryList(e){
   count--;
   groceryCount.value = count
   groceryCount.innerHTML = count
-  //  console.log(count)
   }
 }
 
@@ -146,13 +135,15 @@ function addToBoughtList(e){
   boughtList.append(boughtLi);
   alert('1 grocery bought');
   
-  //Update bought count   
-  count = groceryList.childElementCount;
-  groceryCount.value= count;
+  //Update grocery count value & Ui
+  count--;  
   groceryCount.innerHTML = count;
 
+  //Update bought count value = UI
+  boughtCount.innerHTML= boughtList.childElementCount;
+  // console.log(count); 
 
-  //Remove from bought list
+  //Remove from grocery list
   e.target.parentElement.parentElement.remove()
 
   
@@ -167,11 +158,48 @@ function removeFromBoughtList(e){
   if(e.target.parentElement.classList.contains('grocery-bought__icon')){
     if(confirm('Are you sure')){
       e.target.parentElement.parentElement.parentElement.remove();
-      count--;
-      boughtCount.value = count
-      boughtCount.innerHTML=count;
+      boughtCount.innerHTML= boughtList.childElementCount;
+      // console.log(boughtList.childElementCount);
     }
   }
+}
+
+//Create grocery
+function createGrocery(inputValue){
+  //Create li
+  const li = document.createElement('li');
+  li.className = 'grocery-collection__item';
+
+  //Create span(grocery name)
+  const span = document.createElement('span');
+  span.className = 'grocery-collection__name';
+  span.appendChild(document.createTextNode(inputValue));
+
+  //Create button div
+  const btns =document.createElement('div');
+  btns.className ='grocery-collection__btns';
+  btns.innerHTML = grocerybtns;
+
+
+  // Append
+  li.append(span,btns);
+  groceryList.appendChild(li);
+}
+
+
+
+
+//Clear all function
+function clearAll(){
+  // boughtList.innerHTML =''; 
+
+  //Faster method
+  while(boughtList.firstChild){
+     boughtList.removeChild(boughtList.firstChild);
+  }
+  boughtCount.innerHTML= boughtList.childElementCount;
+
+ 
 }
 
 
@@ -188,5 +216,35 @@ function searchGrocery(e){
     else{
         item.style.display = 'none';
       }
+  })
+}
+
+
+
+//Local Storage
+//1.Store in local storage
+function populateLocalStorage(groceryItem){
+  let groceryItems;
+  if(!(localStorage.getItem('groceryItems') === null)){
+    groceryItems = JSON.parse(localStorage.getItem('groceryItems'));
+  }else{
+    groceryItems = [];
+  }
+  groceryItems.push(groceryItem);
+  localStorage.setItem('groceryItems',JSON.stringify(groceryItems))
+}
+
+
+//2.Get from local storage
+function getFromLocalStorage(){
+  let groceryItems;
+  if(!(localStorage.getItem('groceryItems') === null)){
+    groceryItems = JSON.parse(localStorage.getItem('groceryItems'));
+  }else{
+    groceryItems = [];
+  }
+  groceryItems.forEach(function(grocery){
+    createGrocery(grocery);
+
   })
 }

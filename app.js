@@ -25,8 +25,14 @@ loadEventListeners();
 
 //function event listeners
 function loadEventListeners(){
-  //Load DOM content
+  //Load DOM content grocery to be bought
   document.addEventListener('DOMContentLoaded',getFromLocalStorage)
+  //Load DOM content bought grocery
+  document.addEventListener('DOMContentLoaded',getFromLocalStorageBoughtItem)
+  //Load DOM content grocery count
+  document.addEventListener('DOMContentLoaded',currentGroceryCount)
+  //Load DOM content boughgt grocery count
+  document.addEventListener('DOMContentLoaded',currentBoughtGroceryCount)
   //Add task event
   form.addEventListener('submit',addGrocery);
   //Remove from bought list 
@@ -65,19 +71,22 @@ function addGrocery(e){
 
     addGroceryTitle.value = '';
 
-  //Create a grocery
-   createGrocery(addGroceryInput.value);
+    //Create a grocery
+    createGrocery(addGroceryInput.value);
     
     //Add to LS
     populateLocalStorage(addGroceryInput.value);
 
     addGroceryInput.value = '';
 
+
     //Update grocery count 
-    count = groceryList.childElementCount;
-    groceryCount.value= count   // Number(count)
-    groceryCount.innerHTML = count;
-    // // alert('Grocery added');
+    currentGroceryCount();
+    
+    // count = groceryList.childElementCount;
+    // groceryCount.value= count   // Number(count)
+    // groceryCount.innerHTML = count;
+    // alert('Grocery added');
 
   }
   e.preventDefault();
@@ -85,13 +94,14 @@ function addGrocery(e){
 }
 
 
-
 //Function remove from grocery list
 function removeFromGroceryList(e){
   if(e.target.classList.contains('btnn-remove')){
-  if(confirm('Are you sure you want to delete this item'))
-  e.target.parentElement.parentElement.remove();
-
+  if(confirm('Are you sure you want to delete this item')){
+    e.target.parentElement.parentElement.remove();
+  }
+  
+  removeItemFromLocalStorage(e.target.parentElement.parentElement);
   count--;
   groceryCount.value = count
   groceryCount.innerHTML = count
@@ -135,12 +145,17 @@ function addToBoughtList(e){
   boughtList.append(boughtLi);
   alert('1 grocery bought');
   
-  //Update grocery count value & Ui
-  count--;  
-  groceryCount.innerHTML = count;
+  populateLocalStorageBoughtItem(boughtItem);
 
-  //Update bought count value = UI
-  boughtCount.innerHTML= boughtList.childElementCount;
+  //Update grocery count value & Ui
+
+  currentBoughtGroceryCount();
+
+  // count--;  
+  // groceryCount.innerHTML = count;
+
+  // //Update bought count value = UI
+  // boughtCount.innerHTML= boughtList.childElementCount;
   // console.log(count); 
 
   //Remove from grocery list
@@ -158,6 +173,8 @@ function removeFromBoughtList(e){
   if(e.target.parentElement.classList.contains('grocery-bought__icon')){
     if(confirm('Are you sure')){
       e.target.parentElement.parentElement.parentElement.remove();
+
+      removeItemFromBoughtLS(e.target.parentElement.parentElement.parentElement)
       boughtCount.innerHTML= boughtList.childElementCount;
       // console.log(boughtList.childElementCount);
     }
@@ -199,7 +216,7 @@ function clearAll(){
   }
   boughtCount.innerHTML= boughtList.childElementCount;
 
- 
+ removeAllFromLocalStorage();
 }
 
 
@@ -221,7 +238,11 @@ function searchGrocery(e){
 
 
 
-//Local Storage
+
+
+
+
+//LOCAL STORAGE FUNCTIONALITY FOR GROCERY LIST
 //1.Store in local storage
 function populateLocalStorage(groceryItem){
   let groceryItems;
@@ -232,6 +253,7 @@ function populateLocalStorage(groceryItem){
   }
   groceryItems.push(groceryItem);
   localStorage.setItem('groceryItems',JSON.stringify(groceryItems))
+
 }
 
 
@@ -247,4 +269,151 @@ function getFromLocalStorage(){
     createGrocery(grocery);
 
   })
+}
+//3. Count from LS
+function countLSGroceryList(){
+  let groceryItems;
+  if(!(localStorage.getItem('groceryItems') === null)){
+    groceryItems = JSON.parse(localStorage.getItem('groceryItems'));
+  }else{
+    groceryItems = [];
+  }
+  return groceryItems.length;
+}
+
+//4. Current grocery count
+function currentGroceryCount(){
+  count = countLSGroceryList();
+  groceryCount.value= count   
+  groceryCount.innerHTML = count;
+}
+
+
+//5. Remove an item from LS
+function removeItemFromLocalStorage(grocery){
+  let groceryItems;
+  if(!(localStorage.getItem('groceryItems') === null)){
+    groceryItems = JSON.parse(localStorage.getItem('groceryItems'));
+  }else{
+    groceryItems = [];
+  }
+
+  groceryItems.forEach(function(groceryItem, groceryIndex){
+    if(grocery.textContent === groceryItem){
+      groceryItems.splice(groceryIndex,1);
+      console.log(grocery.textContent);
+    }
+  })
+  localStorage.setItem('groceryItems',JSON.stringify(groceryItems))
+  // localStorage.setItem('groceryItems',JSON.stringify(groceryItems))
+}
+
+
+
+
+
+//LOCAL STORAGE FOR BOUGHT LIST
+//1.Store in local storage
+function populateLocalStorageBoughtItem(boughtItem){
+  let boughtItems;
+  if(!(localStorage.getItem('boughtItems') === null)){
+    boughtItems = JSON.parse(localStorage.getItem('boughtItems'));
+  }else{
+    boughtItems = [];
+  }
+  boughtItems.push(boughtItem);
+  localStorage.setItem('boughtItems',JSON.stringify(boughtItems))
+
+  // const lsCount = boughtItems.length;
+  // console.log(lsCount);
+}
+
+
+
+
+//2.Get from local storage
+function getFromLocalStorageBoughtItem(){
+  let boughtItems;
+  if(!(localStorage.getItem('boughtItems') === null)){
+    boughtItems = JSON.parse(localStorage.getItem('boughtItems'));
+  }else{
+    boughtItems = [];
+  }
+  boughtItems.forEach(function(boughtGrocery){
+   //Create li
+  const boughtLi = document.createElement('li')
+  boughtLi.className = 'grocery-bought__item';
+
+  //Create delete button
+  const del = document.createElement('del')
+  del.className = 'grey';
+
+  //Create li
+  const boughtSpan = document.createElement('span')
+  boughtSpan.className = 'grocery-bought__name';
+  boughtSpan.appendChild(document.createTextNode(boughtGrocery));
+
+  del.appendChild(boughtSpan);
+
+  //Add btn
+  const boughtdel =document.createElement('div');
+  boughtdel.className ='grocery-bought__btn';
+  boughtdel.innerHTML = boughtremove;
+
+  boughtLi.append(del,boughtdel);
+
+
+  //Add to Bought List
+  boughtList.append(boughtLi);
+
+  })
+}
+
+
+//3. Count from LS
+function countLSBoughtList(){
+  let boughtItems;
+  if(!(localStorage.getItem('boughtItems') === null)){
+    boughtItems = JSON.parse(localStorage.getItem('boughtItems'));
+  }else{
+    boughtItems = [];
+  }
+  return boughtItems.length;
+}
+
+
+//4. Current grocery count
+function currentBoughtGroceryCount(){
+  count = countLSBoughtList();
+  boughtCount.value= count   
+  boughtCount.innerHTML = count;
+}
+
+
+
+//Remove one from LS bought list
+function removeItemFromBoughtLS(boughtItem){
+  let boughtItems;
+  if(!(localStorage.getItem('boughtItems') === null)){
+    boughtItems = JSON.parse(localStorage.getItem('boughtItems'));
+  }else{
+    boughtItems = [];
+  }
+
+  boughtItems.forEach(function(boughtgrocery,index){
+    if(boughtItem.textContent === boughtgrocery){
+      boughtItems.splice(index,1);
+    }
+    // console.log(boughtItem.textContent);
+    // console.log(boughtgrocery);
+  })
+  // console.log(boughtItem.textContent);
+  localStorage.setItem('boughtItems',JSON.stringify(boughtItems))
+
+}
+
+
+//Remove all from LS bought list
+function removeAllFromLocalStorage(){
+  localStorage.removeItem('boughtItems');
 }
